@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.or.ddit.buyer.dao.IBuyerDAO">
+
+<select id="selectAllBuyer" resultType="buyerVO">
+    SELECT
+    buyer_id,buyer_name, buyer_lgu, buyer_bank, buyer_bankno,
+    buyer_bankname, buyer_zip, buyer_add1, buyer_add2, buyer_comtel,
+    buyer_fax, buyer_mail, buyer_charger, buyer_telext
+	FROM
+    buyer                 
+</select>
+
+<select id="selectBuyer" parameterType="string" resultType="buyerVO">
+	SELECT
+    buyer_id,buyer_name, buyer_lgu, buyer_bank, buyer_bankno,
+    buyer_bankname, buyer_zip, buyer_add1, buyer_add2, buyer_comtel,
+    buyer_fax, buyer_mail, buyer_charger, buyer_telext
+	FROM
+    buyer
+    where buyer_id = #{buyer_id}
+</select>
+<insert id="insertBuyer" parameterType="buyerVO">
+<selectKey resultType="string" keyProperty="buyer_id">
+			select #{buyer_lgu}||lpad(nvl(to_number( substr( MAX(buyer_id),5)),0)+1,2,'0') from prod where buyer_lgu = #{buyer_lgu}
+</selectKey>
+INSERT INTO buyer (
+    buyer_id,    buyer_name,
+    buyer_lgu,    buyer_bank,
+    buyer_bankno,    buyer_bankname,
+    buyer_zip,    buyer_add1,
+    buyer_add2,    buyer_comtel,
+    buyer_fax,    buyer_mail,
+    buyer_charger,    buyer_telext
+) VALUES (
+     #{buyer_id}#,    #{buyer_name},
+    #{buyer_lgu}#,    #{buyer_bank},
+   #{buyer_bankno}#,    #{buyer_bankname},
+    #{buyer_zip}#,    #{buyer_add1},
+    #{buyer_add2}#,    #{buyer_comtel},
+    #{buyer_fax}#,    #{buyer_mail},
+    #{buyer_charger}#,    #{buyer_telext}
+)
+</insert>
+</mapper>
